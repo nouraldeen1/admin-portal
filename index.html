@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Admin Panel</title>
+</head>
+<body>
+    <div class="sidebar">
+        <h1>Admin Panel</h1>
+        <a href="#authentication-data-ingestion" onclick="showSection('authentication-data-ingestion')">Authentication & Data Ingestion</a>
+        <a href="#schema-masking" onclick="showSection('schema-masking')">Schema & Masking</a>
+        <a href="#deployment" onclick="showSection('deployment')">Deployment Settings</a>
+        <a href="#analytics" onclick="showSection('analytics')">Analytics</a>
+    </div>
+    <div class="main-panel">
+        <div id="authentication-data-ingestion" class="section">
+            <h2>Authentication & Data Ingestion</h2>
+            <div id="authentication-section">
+                <h3>Authentication Settings</h3>
+                <form id="authentication-form">
+                    <div class="form-group">
+                        <label for="db-type">Database Type:</label>
+                        <select id="db-type" name="db-type" onchange="updateAuthenticationFields()">
+                            <option value="aws">AWS RDS</option>
+                            <option value="gcp">GCP Cloud SQL</option>
+                            <option value="azure">Azure SQL</option>
+                            <option value="private">Private Cloud</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="auth-oauth">
+                        <label for="oauth-client-id">OAuth 2.0 Client ID:</label>
+                        <input type="text" id="oauth-client-id" name="oauth-client-id" placeholder="Enter OAuth Client ID">
+                        <label for="oauth-client-secret">OAuth 2.0 Client Secret:</label>
+                        <input type="password" id="oauth-client-secret" name="oauth-client-secret" placeholder="Enter OAuth Client Secret">
+                        <label for="oauth-token-url">OAuth 2.0 Token URL:</label>
+                        <input type="url" id="oauth-token-url" name="oauth-token-url" placeholder="Enter OAuth Token URL">
+                    </div>
+                    <div class="form-group" id="auth-ldap">
+                        <label for="ldap-server">LDAP Server:</label>
+                        <input type="text" id="ldap-server" name="ldap-server" placeholder="Enter LDAP Server URL">
+                        <label for="ldap-dn">LDAP Bind DN:</label>
+                        <input type="text" id="ldap-dn" name="ldap-dn" placeholder="Enter LDAP Bind DN">
+                        <label for="ldap-password">LDAP Password:</label>
+                        <input type="password" id="ldap-password" name="ldap-password" placeholder="Enter LDAP Password">
+                    </div>
+                    <div class="form-group" id="auth-mfa">
+                        <label for="mfa-provider">MFA Provider:</label>
+                        <input type="text" id="mfa-provider" name="mfa-provider" placeholder="Enter MFA Provider">
+                        <label for="mfa-secret">MFA Secret:</label>
+                        <input type="text" id="mfa-secret" name="mfa-secret" placeholder="Enter MFA Secret">
+                    </div>
+                    <div class="form-group" id="auth-ssh">
+                        <label for="ssh-key">SSH Key:</label>
+                        <textarea id="ssh-key" name="ssh-key" placeholder="Paste your SSH key here" rows="4"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div id="data-ingestion-section">
+                <h3>Data Ingestion</h3>
+                <form id="data-ingestion-form">
+                    <div class="form-group">
+                        <label for="host">Host:</label>
+                        <input type="text" id="host" name="host" placeholder="Database Host">
+                    </div>
+                    <div class="form-group">
+                        <label for="port">Port:</label>
+                        <input type="number" id="port" name="port" placeholder="Database Port">
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" placeholder="Password">
+                    </div>
+                    <button type="button" class="button" onclick="submitDataIngestionForm()">Submit</button>
+                </form>
+                <div id="status-indicators">
+                    <p>Status: <span id="status">Not Connected</span></p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="schema-masking" class="section hidden">
+            <h2>Schema & Masking Configuration</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Schema</th>
+                        <th>Field</th>
+                        <th>Masking Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Schema1</td>
+                        <td>Field1</td>
+                        <td><button onclick="toggleMasking(this)">Mask</button></td>
+                    </tr>
+                    <!-- More rows can be added dynamically -->
+                </tbody>
+            </table>
+        </div>
+
+        <div id="deployment" class="section hidden">
+            <h2>Deployment Settings</h2>
+            <div class="form-group">
+                <label for="cloud-type">Target Cloud:</label>
+                <select id="cloud-type" name="cloud-type">
+                    <option value="aws">AWS</option>
+                    <option value="gcp">GCP</option>
+                    <option value="azure">Azure</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="region">Region:</label>
+                <input type="text" id="region" name="region" placeholder="Region">
+            </div>
+            <div class="form-group">
+                <label for="instance-type">Instance Type:</label>
+                <input type="text" id="instance-type" name="instance-type" placeholder="Instance Type">
+            </div>
+            <div class="form-group">
+                <label for="replica-count">Replica Count:</label>
+                <input type="number" id="replica-count" name="replica-count" placeholder="Number of Replicas">
+            </div>
+            <div class="form-group">
+                <label for="replica-type">Replica Type:</label>
+                <select id="replica-type" name="replica-type">
+                    <option value="standby">Standby</option>
+                    <option value="read-replica">Read Replica</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="replica-region">Replica Region:</label>
+                <input type="text" id="replica-region" name="replica-region" placeholder="Replica Region">
+            </div>
+            <button type="button" class="button" onclick="deploy()">Deploy</button>
+            <div id="terraform-status">
+                <p>Status: <span id="terraform-status-text">Pending</span></p>
+            </div>
+        </div>
+
+        <div id="analytics" class="section hidden">
+            <h2>Analytics & Reporting</h2>
+            <div class="widget">
+                <h3>Performance Metrics</h3>
+                <canvas id="performance-chart" width="400" height="200"></canvas>
+            </div>
+            <button type="button" class="button" onclick="generateReport()">Generate Report</button>
+            <div id="report-status">
+                <p>Report Status: <span id="report-status-text">Not Generated</span></p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

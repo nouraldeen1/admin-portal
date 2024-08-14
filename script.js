@@ -58,37 +58,8 @@ function saveAuthenticationSettings() {
 }
 
 
-// Submit Data Ingestion Form
-function submitForm() {
-    const status = document.getElementById('status');
-    status.textContent = 'Connected'; // Simulate connection status
-}
 
-// Toggle Masking
-function toggleMasking(button) {
-    if (button.textContent === 'Mask') {
-        button.textContent = 'Unmask';
-    } else {
-        button.textContent = 'Mask';
-    }
-}
 
-// Deploy Configuration
-function deploy() {
-    const terraformStatus = document.getElementById('terraform-status-text');
-    terraformStatus.textContent = 'Deployed'; // Simulate deployment status
-}
-
-// Generate Report
-function generateReport() {
-    const reportStatus = document.getElementById('report-status-text');
-    reportStatus.textContent = 'Generated'; // Simulate report generation
-}
-
-// Initial setup (show Dashboard by default)
-document.addEventListener('DOMContentLoaded', () => {
-    showSection('dashboard');
-});
 function showSection(sectionId) {
     console.log('Showing section:', sectionId);
     const sections = document.querySelectorAll('.section');

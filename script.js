@@ -6,12 +6,6 @@ function showSection(sectionId) {
     });
     document.getElementById(sectionId).classList.remove('hidden');
 }
-function showSection(sectionId) {
-    document.querySelectorAll('.section').forEach(section => {
-        section.classList.add('hidden');
-    });
-    document.getElementById(sectionId).classList.remove('hidden');
-}
 
 function updateAuthenticationFields() {
     const dbType = document.getElementById('db-type').value;
@@ -60,19 +54,6 @@ function saveAuthenticationSettings() {
 
 
 
-function showSection(sectionId) {
-    console.log('Showing section:', sectionId);
-    const sections = document.querySelectorAll('.section');
-    sections.forEach(section => {
-        section.classList.remove('visible');
-        section.classList.add('hidden');
-    });
-    const targetSection = document.getElementById(sectionId);
-    if (targetSection) {
-        targetSection.classList.remove('hidden');
-        targetSection.classList.add('visible');
-    }
-}
 
 function submitForm() {
     const status = document.getElementById('status');

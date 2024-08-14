@@ -39,7 +39,6 @@ jobs:
        # run: deno lint
 
      # - name: Run tests
-      #  run: deno test -A
-
-    - name: Run Deno server
-      run: deno run --allow-net --
+      #  run: deno test -
+      - name: Run Deno server
+        run: deno run --allow-net --allow-read server.ts
